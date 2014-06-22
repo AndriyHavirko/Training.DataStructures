@@ -89,5 +89,48 @@ namespace Training.DataStructures.Lib
             }
             return false;
         }
+
+        public T Min()
+        {
+            var currentNode = this.First;
+            var min = currentNode.Data;
+            while (currentNode != null)
+            {
+                if (currentNode.Data < min)
+                    min = currentNode.Data;
+                currentNode = currentNode.Next;
+            }
+            return min;
+        }
+
+        public T Max()
+        {
+            var currentNode = this.First;
+            var max = currentNode.Data;
+            while (currentNode != null)
+            {
+                if (currentNode.Data > max)
+                    max = currentNode.Data;
+                currentNode = currentNode.Next;
+            }
+            return max;
+        }
+
+        public void BubbleSort()
+        {
+            //TODO: write implementation
+        }
+
+        public void MergeSort()
+        {
+            //TODO: write implemetation
+        }
+
+        protected void Swap (LinkedListNode<T> a, LinkedListNode<T> b)
+        {
+            T temp = a.Data;
+            a.Data = b.Data;
+            b.Data = temp;
+        }
     }
 }
