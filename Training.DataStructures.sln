@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Training.DataStructures.Lib", "Training.DataStructures.Lib\Training.DataStructures.Lib.csproj", "{FB37B7A2-1108-41F4-BF5B-ACDA30D90E33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Training.DataStructures.App", "Training.DataStructures.App\Training.DataStructures.App.csproj", "{7926BE34-EDD3-4289-BF8C-5936BF2946F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{FB37B7A2-1108-41F4-BF5B-ACDA30D90E33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB37B7A2-1108-41F4-BF5B-ACDA30D90E33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB37B7A2-1108-41F4-BF5B-ACDA30D90E33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7926BE34-EDD3-4289-BF8C-5936BF2946F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7926BE34-EDD3-4289-BF8C-5936BF2946F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7926BE34-EDD3-4289-BF8C-5936BF2946F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7926BE34-EDD3-4289-BF8C-5936BF2946F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
