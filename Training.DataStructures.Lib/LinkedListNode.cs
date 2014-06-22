@@ -2,35 +2,19 @@
 
 namespace Training.DataStructures.Lib
 {
-    public class LinkedListNode<T>: IComparable<LinkedListNode<T>> where T: IComparable<T>
+    public class LinkedListNode<T>: IComparable<LinkedListNode<T>> where T: IComparable<T>, IEquatable<T>
     {
-        private T data;
-        private LinkedListNode<T> next;
+        public T Data { get; set; }
+        public LinkedListNode<T> Next { get; set; }
+        public LinkedListNode<T> Previous { get; set; }
 
-        public LinkedListNode()
+        public LinkedListNode(T data = default(T), LinkedListNode<T> next = null, LinkedListNode<T> previous = null)
         {
-            this.data = default(T);
-            this.next = null;
+            this.Data = data;
+            this.Next = next;
+            this.Previous = previous;
         }
-
-        public LinkedListNode(T data, LinkedListNode<T> next)
-        {
-            this.data = data;
-            this.next = next;
-        }
-
-        public T Data
-        {
-            get { return this.data; }
-            set { this.data = value; }
-        }
-
-        public LinkedListNode<T> Next
-        {
-            get { return this.next; }
-            set { this.next = value; }
-        }
-
+        
         public int CompareTo(LinkedListNode<T> other)
         {
             return this.Data.CompareTo(other.Data);
