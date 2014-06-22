@@ -2,15 +2,15 @@
 
 namespace Training.DataStructures.Lib
 {
-    public class LinkedListNode<T>: IComparable<T> where T: IComparable<T>
+    public class LinkedListNode<T>: IComparable<LinkedListNode<T>> where T: IComparable<T>
     {
         private T data;
         private LinkedListNode<T> next;
 
         public LinkedListNode()
         {
-            data = default(T);
-            next = null;
+            this.data = default(T);
+            this.next = null;
         }
 
         public LinkedListNode(T data, LinkedListNode<T> next)
@@ -31,9 +31,10 @@ namespace Training.DataStructures.Lib
             set { this.next = value; }
         }
 
-        public int CompareTo(T other)
+        public int CompareTo(LinkedListNode<T> other)
         {
-            return data.CompareTo(other);
+            return this.Data.CompareTo(other.Data);
         }
+
     }
 }
