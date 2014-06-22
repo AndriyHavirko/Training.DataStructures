@@ -20,5 +20,9 @@ namespace Training.DataStructures.Lib
             return this.Data.CompareTo(other.Data);
         }
 
+        public override string ToString()
+        {
+            return this.Data.ToString();
+        }
     }
 }
