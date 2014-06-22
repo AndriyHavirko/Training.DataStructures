@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Training.DataStructures.Lib
@@ -50,11 +48,34 @@ namespace Training.DataStructures.Lib
             this.Count++;
         }
 
+        public void Add(IEnumerable<T> items)
+        {
+            var syncObj = new Object();
+            Parallel.ForEach(items, (item) => {
+                lock (syncObj)
+                {
+                    this.Add(item);
+                }
+            });
+        }
+
         public void Clear()
         {
             this.first = null;
             this.last = null;
             this.Count = 0;
+        }
+
+        public bool Contains(T item)
+        {
+            var current = this.First;
+            while(current != null)
+            {
+                if (current.Data.Equals(item))
+                    return true;
+                current = current.Next;
+            }
+            return false;
         }
 
         public bool Remove(T item)
@@ -96,7 +117,7 @@ namespace Training.DataStructures.Lib
             var min = currentNode.Data;
             while (currentNode != null)
             {
-                if (currentNode.Data < min)
+                if (currentNode.Data.CompareTo(min) < 0)
                     min = currentNode.Data;
                 currentNode = currentNode.Next;
             }
@@ -109,7 +130,7 @@ namespace Training.DataStructures.Lib
             var max = currentNode.Data;
             while (currentNode != null)
             {
-                if (currentNode.Data > max)
+                if (currentNode.Data.CompareTo(max) > 0)
                     max = currentNode.Data;
                 currentNode = currentNode.Next;
             }
@@ -118,19 +139,47 @@ namespace Training.DataStructures.Lib
 
         public void BubbleSort()
         {
-            //TODO: write implementation
+            Task sorting = new Task(this.InnerBubbleSort);
+            sorting.Start();
+            sorting.Wait();
         }
 
         public void MergeSort()
         {
-            //TODO: write implemetation
+            Task sorting = new Task(this.InnerMergeSort);
+            sorting.Start();
+            sorting.Wait();
         }
 
-        protected void Swap (LinkedListNode<T> a, LinkedListNode<T> b)
+        protected void Swap(ref LinkedListNode<T> a, ref LinkedListNode<T> b)
         {
             T temp = a.Data;
             a.Data = b.Data;
             b.Data = temp;
+        }
+
+        private void InnerBubbleSort()
+        {
+            // if list is empty or contains only 1 item, it's already sorted;
+            if (this.First == null || this.First.Next == null)
+                return;
+            for (var nodeI = this.First; 
+                     nodeI != null; 
+                     nodeI = nodeI.Next)
+            {
+                for (var nodeJ = this.First;
+                         nodeJ.Next != null;
+                         nodeJ = nodeJ.Next)
+                {
+                    if (nodeI.CompareTo(nodeJ) < 1)
+                        this.Swap(ref nodeI, ref nodeJ);
+                }
+            }
+        }
+
+        private void InnerMergeSort()
+        {
+            //TODO: add an implemetation
         }
     }
 }
