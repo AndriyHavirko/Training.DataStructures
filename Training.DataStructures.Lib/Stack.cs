@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Training.DataStructures.Lib
 {
@@ -36,11 +35,11 @@ namespace Training.DataStructures.Lib
         public T Pop()
         {
             if (top == null)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(message: "The Stack is empty.");
             
             var data = top.Data;
             if (top.Next != null)
-                top.Next.Previous = null;
+                top.Next.Previous = null; // removing link to current top element, so it could be GCed;
             
             top = top.Next;
             Count--;
