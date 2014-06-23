@@ -10,19 +10,19 @@ namespace Training.DataStructures.Lib
 
         public LinkedListNode(T data = default(T), LinkedListNode<T> next = null, LinkedListNode<T> previous = null)
         {
-            this.Data = data;
-            this.Next = next;
-            this.Previous = previous;
+            Data = data;
+            Next = next;
+            Previous = previous;
         }
         
         public int CompareTo(LinkedListNode<T> other)
         {
-            return this.Data.CompareTo(other.Data);
+            return Data.CompareTo(other.Data);
         }
 
         public override string ToString()
         {
-            return this.Data.ToString();
+            return Data.ToString();
         }
     }
 }

@@ -8,32 +8,22 @@ namespace Training.DataStructures.Lib
     {
         private LinkedListNode<T> top;
 
-        public Stack()
-        {
-            this.top = null;
-            this.Count = 0;
-        }
-
-        public int Count
-        {
-            get;
-            private set;
-        }
+        public int Count { get; private set; }
 
         public LinkedListNode<T> Top
         {
-            get { return this.top; }
+            get { return top; }
         }
 
         public void Clear()
         {
             top = null;
-            this.Count = 0;
+            Count = 0;
         }
 
         public bool Contains(T item)
         {
-            var current = this.top;
+            var current = top;
             while (current != null)
             {
                 if (current.Data.Equals(item))
@@ -45,38 +35,36 @@ namespace Training.DataStructures.Lib
 
         public T Pop()
         {
-            if (this.top == null)
+            if (top == null)
                 throw new InvalidOperationException();
-            var data = this.top.Data;
-            if (this.top.Next != null)
-                this.top.Next.Previous = null;
-            this.top = this.top.Next;
-            this.Count--;
+            
+            var data = top.Data;
+            if (top.Next != null)
+                top.Next.Previous = null;
+            
+            top = top.Next;
+            Count--;
             return data;
         }
 
         public void Push(T item)
         {
             var newItem = new LinkedListNode<T>(data: item);
-            if (this.top != null)
+            if (top != null)
             {
                 top.Previous = newItem;
                 newItem.Next = top;
             }
             top = newItem;
-            this.Count++;
+            Count++;
         }
 
         public void Push(IEnumerable<T> items)
         {
-            var syncObj = new Object();
-            Parallel.ForEach(items, (item) =>
+            foreach (var item in items)
             {
-                lock (syncObj)
-                {
-                    this.Push(item);
-                }
-            });
+                Push(item);
+            }
         }
     }
 }
