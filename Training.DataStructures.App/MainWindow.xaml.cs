@@ -30,15 +30,16 @@ namespace Training.DataStructures.App
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var list = new Lib.LinkedList<String>();
-            
-            list.Add("A");
-            list.Add("D");
+            try
+            {
+                var list = new Lib.LinkedList<int>();
+                var stack = new Lib.Stack<String>();
+                
+            }
+            catch
+            {
 
-
-            list.Remove("D");
-            list.Remove("A");
-            list.Remove("S");
+            }
         }
     }
 }
