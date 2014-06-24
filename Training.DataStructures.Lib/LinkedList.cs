@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Training.DataStructures.Lib
 {
@@ -22,18 +23,21 @@ namespace Training.DataStructures.Lib
 
         public void Add(T item)
         {
-            var newNode = new LinkedListNode<T>(data: item);
-            if (first == null)
+            lock (this)
             {
-                first = newNode;
+                var newNode = new LinkedListNode<T>(data: item);
+                if (first == null)
+                {
+                    first = newNode;
+                }
+                else
+                {
+                    last.Next = newNode;
+                    newNode.Previous = last;
+                }
+                last = newNode;
+                Count++;
             }
-            else
-            {
-                last.Next = newNode;
-                newNode.Previous = last;
-            }
-            last = newNode;
-            Count++;
         }
 
         public void Add(IEnumerable<T> items)
@@ -65,35 +69,38 @@ namespace Training.DataStructures.Lib
 
         public bool Remove(T item)
         {
-            var currentNode = first;
-            while (currentNode != null)
+            lock (this)
             {
-                if (currentNode.Data.Equals(item))
+                var currentNode = first;
+                while (currentNode != null)
                 {
-                    if (currentNode == first)
+                    if (currentNode.Data.Equals(item))
                     {
-                        first = currentNode.Next;
-                        if (currentNode.Next != null)
-                            currentNode.Next.Previous = null;
+                        if (currentNode == first)
+                        {
+                            first = currentNode.Next;
+                            if (currentNode.Next != null)
+                                currentNode.Next.Previous = null;
+                            else
+                                last = null;
+                        }
+                        else if (currentNode == last)
+                        {
+                            currentNode.Previous.Next = null;
+                            last = currentNode.Previous;
+                        }
                         else
-                            last = null;
+                        {
+                            currentNode.Previous.Next = currentNode.Next;
+                            currentNode.Next.Previous = currentNode.Previous;
+                        }
+                        Count--;
+                        return true;
                     }
-                    else if (currentNode == last)
-                    {
-                        currentNode.Previous.Next = null;
-                        last = currentNode.Previous;
-                    }
-                    else
-                    {
-                        currentNode.Previous.Next = currentNode.Next;
-                        currentNode.Next.Previous = currentNode.Previous;
-                    }
-                    Count--;
-                    return true;
+                    currentNode = currentNode.Next;
                 }
-                currentNode = currentNode.Next;
+                return false;
             }
-            return false;
         }
 
         public T Min()
@@ -122,6 +129,17 @@ namespace Training.DataStructures.Lib
             return max;
         }
 
+        public void Sort()
+        {
+            Task.Run(() =>
+            {
+                lock (this)
+                {
+                    BubbleSort();
+                }
+            });
+        }
+
         protected void Swap(LinkedListNode<T> a, LinkedListNode<T> b)
         {
             var temp = a.Data;
@@ -130,7 +148,7 @@ namespace Training.DataStructures.Lib
 
         }
 
-        public void BubbleSort()
+        protected void BubbleSort()
         {
             // if list is empty or contains only 1 item, it's already sorted;
             if (first == null || first.Next == null)
@@ -149,9 +167,6 @@ namespace Training.DataStructures.Lib
             }
         }
 
-        public void InnerMergeSort()
-        {
-            //TODO: add an implemetation
-        }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,17 @@ namespace Training.DataStructures.App
                 var list = new Lib.LinkedList<int>();
                 var stack = new Lib.Stack<String>();
                 
+                list.Add(3);
+                list.Add(5);
+                list.Add(9);
+                list.Add(2); 
+                list.Add(1);
+
+                for (int i = 0; i < 100000; i++)
+                {
+                    list.Add(i);
+                    list.Sort();
+                }
             }
             catch
             {
