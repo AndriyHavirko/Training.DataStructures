@@ -8,7 +8,7 @@ namespace Training.DataStructures.Lib
         private T[] data;
         private int size;
 
-        private const int DefaultCapacity = 4;
+        private static readonly int DefaultCapacity = 4;
 
         public ArrayList()
         {
@@ -22,22 +22,21 @@ namespace Training.DataStructures.Lib
             data = new T[capacity];
         }
 
-        public int Count {
+        public int Count 
+        {
             get { return size; }
         }
 
-        public int Capacity {
-            get
-            {
-                return data.Length;
-            }
+        public int Capacity
+        {
+            get { return data.Length; }
             set
             {
                 if (value != data.Length)
                 {
                     if (value > 0)
                     {
-                        T[] newData = new T[value];
+                        var newData = new T[value];
                         if (size > 0)
                             Array.Copy(data, 0, newData, 0, size);
                         data = newData;
@@ -78,47 +77,80 @@ namespace Training.DataStructures.Lib
 
         public void Add(T item)
         {
-            throw new NotImplementedException();
+            if (size == data.Length)
+                CheckCapacity(size + 1);
+            data[size] = item;
+            size++;
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            if (size > 0)
+            {
+                Array.Clear(data, 0, size);
+                size = 0;
+            }
         }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < size; i++)
+            {
+                if (data[i].Equals(item))
+                    return true;
+            }
+            return false;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            Array.Copy(data, 0, array, arrayIndex, size);
         }
 
         public void Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            if (index < 0 || index > size)
+                throw  new ArgumentOutOfRangeException();
+            if (size == data.Length)
+                CheckCapacity(size + 1);
+            Array.Copy(data, index, data, index + 1, size - index);
+            data[index] = item;
+            size++;
         }
 
         public void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            if (index < 0 || index > size)
+                throw new ArgumentOutOfRangeException();
+            size--;
+
+            Array.Copy(data, index + 1, data, index, size - index);
+            data[size] = default(T);
         }
 
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            int index = IndexOf(item);
+            if (index >= 0)
+            {
+                RemoveAt(index);
+                return true;
+            }
+            return false;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            lock (this)
+            {
+                for (int i = 0; i < size; i++)
+                    yield return data[i];
+            }
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return data.GetEnumerator();
         }
 
         private void CheckCapacity(int limit)
