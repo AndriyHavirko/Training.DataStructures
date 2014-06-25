@@ -129,9 +129,9 @@ namespace Training.DataStructures.Lib
             return max;
         }
 
-        public void Sort()
+        public async Task Sort()
         {
-            Task.Run(() =>
+            await Task.Run(() =>
             {
                 lock (this)
                 {

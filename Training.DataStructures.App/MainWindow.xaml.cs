@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,26 +30,24 @@ namespace Training.DataStructures.App
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 var list = new Lib.LinkedList<int>();
                 var stack = new Lib.Stack<String>();
-                
-                list.Add(3);
-                list.Add(5);
-                list.Add(9);
-                list.Add(2); 
-                list.Add(1);
+                var arrlist = new Lib.ArrayList<String>();
 
-                for (int i = 0; i < 100000; i++)
+                var random = new Random();
+                int size = 10000000;
+
+                for (int i = 0; i < size; i++)
                 {
-                    list.Add(i);
-                    list.Sort();
+                    arrlist.Add(random.Next(size).ToString());
                 }
+                arrlist.MergeSort();
             }
-            catch
+            catch (Exception ex)
             {
 
             }

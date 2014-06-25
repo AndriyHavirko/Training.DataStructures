@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Training.DataStructures.Lib
 {
-    class ArrayList<T>: IList<T> where T: IComparable<T>, IEquatable<T>
+    public class ArrayList<T>: IList<T> where T: IComparable<T>, IEquatable<T>
     {
         private T[] data;
         private int size;
@@ -161,6 +161,109 @@ namespace Training.DataStructures.Lib
                 if (newCapacity < limit)
                     newCapacity = limit;
                 Capacity = newCapacity;
+            }
+        }
+
+        public void MergeSort()
+        {
+            MergeSort(data, 0, size - 1);
+        }
+
+        public void MergeSort(IComparer<T> comparer)
+        {
+            MergeSort(data, 0, size - 1, comparer);
+        }
+
+        private void MergeSort(T[] array, int start, int end)
+        {
+            if (start < end)
+            {
+                int mid = (start + end)/2;
+                MergeSort(array, start, mid);
+                MergeSort(array, mid + 1, end);
+                Merge(array, start, mid, end);
+            }
+        }
+
+        private void MergeSort(T[] array, int start, int end, IComparer<T> comparer)
+        {
+            if (start < end)
+            {
+                int mid = (start + end) / 2;
+                MergeSort(array, start, mid, comparer);
+                MergeSort(array, mid + 1, end, comparer);
+                Merge(array, start, mid, end, comparer);
+            }
+        }
+
+        private void Merge(T[] array, int start, int mid, int end)
+        {
+            var mergedArray = new T[end - start + 1];
+            int leftCursor = start;
+            int rightCursor = mid + 1;
+            int mergedArrayCursor = 0;
+
+            while (leftCursor <= mid && rightCursor <= end)
+            {
+                if (array[leftCursor].CompareTo(array[rightCursor]) < 0)
+                {
+                    mergedArray[mergedArrayCursor++] = array[leftCursor++];
+                }
+                else
+                {
+                    mergedArray[mergedArrayCursor++] = array[rightCursor++];
+                }
+            }
+            while (leftCursor <= mid)
+            {
+                mergedArray[mergedArrayCursor++] = array[leftCursor++];
+            }
+            while (rightCursor <= end)
+            {
+                mergedArray[mergedArrayCursor++] = array[rightCursor++];
+            }
+            
+            mergedArrayCursor = 0;
+            int i = start;
+            while (i <= end && mergedArrayCursor < mergedArray.Length)
+            {
+                array[i++] = mergedArray[mergedArrayCursor++];
+            }
+
+        }
+
+        private void Merge(T[] array, int start, int mid, int end, IComparer<T> comparer)
+        {
+            var mergedArray = new T[end - start + 1];
+            int leftCursor = start;
+            int rightCursor = mid + 1;
+            int mergedArrayCursor = 0;
+
+            while (leftCursor < mid && rightCursor < end)
+            {
+                if (comparer.Compare(array[leftCursor], array[rightCursor]) < 0)
+                {
+                    mergedArray[mergedArrayCursor++] = array[leftCursor++];
+                }
+                else
+                {
+                    mergedArray[mergedArrayCursor++] = array[rightCursor++];
+                }
+            }
+            while (leftCursor <= mid)
+            {
+                mergedArray[mergedArrayCursor++] = array[leftCursor++];
+            }
+            while (rightCursor <= end)
+            {
+                mergedArray[mergedArrayCursor++] = array[rightCursor++];
+            }
+
+            mergedArrayCursor = 0;
+            int i = start;
+            while (i < end && mergedArrayCursor < mergedArray.Length)
+            {
+                array[i++] = mergedArray[mergedArrayCursor++];
             }
         }
     }
