@@ -4,6 +4,10 @@ using System.Threading.Tasks;
 
 namespace Training.DataStructures.Lib
 {
+    /// <summary>
+    /// A double linled list
+    /// </summary>
+    /// <typeparam name="T">Type parameter</typeparam>
     public class LinkedList<T> where T: IComparable<T>, IEquatable<T>
     {
         private LinkedListNode<T> first;
@@ -21,6 +25,10 @@ namespace Training.DataStructures.Lib
             get { return last; }
         }
 
+        /// <summary>
+        /// Add an element to list
+        /// </summary>
+        /// <param name="item"></param>
         public void Add(T item)
         {
             lock (this)
@@ -40,14 +48,67 @@ namespace Training.DataStructures.Lib
             }
         }
 
+        /// <summary>
+        /// Add a collection of elements to list
+        /// </summary>
+        /// <param name="items"></param>
         public void Add(IEnumerable<T> items)
         {
-            foreach (var item in items)
+            lock (this)
             {
-                Add(item);
+                foreach (var item in items)
+                {
+                    Add(item);
+                }
             }
         }
 
+        public void AddAfter(LinkedListNode<T> node, T item)
+        {
+            if (node == last)
+                Add(item);
+            else
+            {
+                lock (this)
+                {
+                    var newNode = new LinkedListNode<T>(data: item);
+                    newNode.Previous = node;
+                    newNode.Next = node.Next;
+
+                    node.Next.Previous = newNode;
+                    node.Next = newNode;
+                    Count++;
+                }
+            }
+
+        }
+
+        public void AddBefore(LinkedListNode<T> node, T item)
+        {
+            var newNode = new LinkedListNode<T>(data: item);
+            lock (this)
+            {
+                if (node == first)
+                {
+                    newNode.Next = node;
+                    node.Previous = newNode;
+                    first = newNode;
+                }
+                else
+                {
+                    newNode.Next = node;
+                    newNode.Previous = node.Previous;
+
+                    node.Previous.Next = newNode;
+                    node.Previous = newNode;
+                }
+                Count++;
+            }
+        }
+
+        /// <summary>
+        /// Clear the list
+        /// </summary>
         public void Clear()
         {
             first = null;
@@ -55,6 +116,11 @@ namespace Training.DataStructures.Lib
             Count = 0;
         }
 
+        /// <summary>
+        /// Check if list contains specific item
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns>Returns true if item was found otherwise returns false</returns>
         public bool Contains(T item)
         {
             var current = first;
@@ -67,42 +133,63 @@ namespace Training.DataStructures.Lib
             return false;
         }
 
+        /// <summary>
+        /// Get a LinkeListNode object containing the item
+        /// </summary>
+        /// <param name="item">Item to be found</param>
+        /// <returns>Returns LinkedListNode object containing the item, or null if item was not found</returns>
+        public LinkedListNode<T> Find(T item)
+        {
+            var current = first;
+            while (current != null)
+            {
+                if (current.Data.Equals(item))
+                    return current;
+                current = current.Next;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Remove the first occurance of the item in list
+        /// </summary>
+        /// <param name="item">Item to be removed</param>
+        /// <returns>Returns true if item was removed otherwise returns false</returns>
         public bool Remove(T item)
         {
+            var nodeToRemove = Find(item);
+            if (nodeToRemove == null)
+                return false;
+            //else
             lock (this)
             {
-                var currentNode = first;
-                while (currentNode != null)
+                if (nodeToRemove == first)
                 {
-                    if (currentNode.Data.Equals(item))
-                    {
-                        if (currentNode == first)
-                        {
-                            first = currentNode.Next;
-                            if (currentNode.Next != null)
-                                currentNode.Next.Previous = null;
-                            else
-                                last = null;
-                        }
-                        else if (currentNode == last)
-                        {
-                            currentNode.Previous.Next = null;
-                            last = currentNode.Previous;
-                        }
-                        else
-                        {
-                            currentNode.Previous.Next = currentNode.Next;
-                            currentNode.Next.Previous = currentNode.Previous;
-                        }
-                        Count--;
-                        return true;
-                    }
-                    currentNode = currentNode.Next;
+                    first = nodeToRemove.Next;
+                    if (nodeToRemove.Next != null)
+                        nodeToRemove.Next.Previous = null;
+                    else
+                        last = null;
                 }
-                return false;
+                else if (nodeToRemove == last)
+                {
+                    nodeToRemove.Previous.Next = null;
+                    last = nodeToRemove.Previous;
+                }
+                else
+                {
+                    nodeToRemove.Previous.Next = nodeToRemove.Next;
+                    nodeToRemove.Next.Previous = nodeToRemove.Previous;
+                }
+                Count--;
+                return true;
             }
         }
 
+        /// <summary>
+        /// Get min item in the list
+        /// </summary>
+        /// <returns>Min item</returns>
         public T Min()
         {
             var currentNode = first;
@@ -116,6 +203,10 @@ namespace Training.DataStructures.Lib
             return min;
         }
 
+        /// <summary>
+        /// Get Max item in the list
+        /// </summary>
+        /// <returns>Max item</returns>
         public T Max()
         {
             var currentNode = first;
@@ -129,7 +220,22 @@ namespace Training.DataStructures.Lib
             return max;
         }
 
-        public async Task Sort()
+        /// <summary>
+        /// Sort list
+        /// </summary>
+        public void Sort()
+        {
+            lock (this)
+            {
+                BubbleSort();
+            }
+        }
+
+        /// <summary>
+        /// Sort list asynchronously
+        /// </summary>
+        /// <returns>Task</returns>
+        public async Task SortAsync()
         {
             await Task.Run(() =>
             {
@@ -140,7 +246,7 @@ namespace Training.DataStructures.Lib
             });
         }
 
-        protected void Swap(LinkedListNode<T> a, LinkedListNode<T> b)
+        private void Swap(LinkedListNode<T> a, LinkedListNode<T> b)
         {
             var temp = a.Data;
             a.Data = b.Data;
@@ -148,7 +254,7 @@ namespace Training.DataStructures.Lib
 
         }
 
-        protected void BubbleSort()
+        private void BubbleSort()
         {
             // if list is empty or contains only 1 item, it's already sorted;
             if (first == null || first.Next == null)
@@ -166,7 +272,5 @@ namespace Training.DataStructures.Lib
                 }
             }
         }
-
-
     }
 }
