@@ -25,16 +25,19 @@ namespace Training.DataStructures.App
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ArrayList<String> users;
+
         public MainWindow()
         {
             InitializeComponent();
+            users = new ArrayList<string>();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var list = new Lib.LinkedList<int>();
+                var list = new Lib.LinkedList<String>();
                 var stack = new Lib.Stack<String>();
                 var arrlist = new Lib.ArrayList<String>();
 
@@ -51,6 +54,11 @@ namespace Training.DataStructures.App
             {
 
             }
+        }
+
+        private void AddUserButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

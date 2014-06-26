@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Button Content="Run" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-1.56,-1.414" Click="Button_Click"/>
+        <TextBox x:Name="UserNameTextBox" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="395"/>
+        <Button x:Name="AddUserButton" Content="Add" HorizontalAlignment="Left" Margin="410,10,0,0" VerticalAlignment="Top" Width="97" Click="AddUserButton_Click" Height="23" />
+        <Button Content="Button" HorizontalAlignment="Left" Margin="10,289,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
 
     </Grid>
 </Window>
