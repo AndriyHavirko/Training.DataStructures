@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Training.DataStructures.Lib
 {
+    /// <summary>
+    /// Represents a simple Queue class with basic operations
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Queue<T> where T : IComparable<T>, IEquatable<T>
     {
         private LinkedListNode<T> first;
