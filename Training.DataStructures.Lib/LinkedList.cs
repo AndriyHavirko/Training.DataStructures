@@ -8,7 +8,7 @@ namespace Training.DataStructures.Lib
     /// A double linled list
     /// </summary>
     /// <typeparam name="T">Type parameter</typeparam>
-    public class LinkedList<T> where T: IComparable<T>, IEquatable<T>
+    public class LinkedList<T>: ICollection<T> where T: IComparable<T>, IEquatable<T>
     {
         private LinkedListNode<T> first;
         private LinkedListNode<T> last;
@@ -25,6 +25,11 @@ namespace Training.DataStructures.Lib
             get { return last; }
         }
 
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
         /// <summary>
         /// Add an element to list
         /// </summary>
@@ -33,7 +38,7 @@ namespace Training.DataStructures.Lib
         {
             lock (this)
             {
-                var newNode = new LinkedListNode<T>(data: item);
+                var newNode = new LinkedListNode<T>(item);
                 if (first == null)
                 {
                     first = newNode;
@@ -71,9 +76,7 @@ namespace Training.DataStructures.Lib
             {
                 lock (this)
                 {
-                    var newNode = new LinkedListNode<T>(data: item);
-                    newNode.Previous = node;
-                    newNode.Next = node.Next;
+                    var newNode = new LinkedListNode<T>(item, previous: node, next: node.Next);
 
                     node.Next.Previous = newNode;
                     node.Next = newNode;
@@ -85,7 +88,7 @@ namespace Training.DataStructures.Lib
 
         public void AddBefore(LinkedListNode<T> node, T item)
         {
-            var newNode = new LinkedListNode<T>(data: item);
+            var newNode = new LinkedListNode<T>(item);
             lock (this)
             {
                 if (node == first)
@@ -131,6 +134,31 @@ namespace Training.DataStructures.Lib
                 current = current.Next;
             }
             return false;
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            var current = first;
+            for (int i = arrayIndex; i < Count + arrayIndex; i++, current = current.Next)
+            {
+                array[i] = current.Data;
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            var current = first;
+            while (current != null)
+            {
+                yield return current.Data;
+                current = current.Next;
+            }
+
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         /// <summary>
