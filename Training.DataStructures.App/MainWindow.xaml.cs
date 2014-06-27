@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
@@ -25,40 +26,45 @@ namespace Training.DataStructures.App
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ArrayList<String> users;
+        private Lib.LinkedList<String> items;
 
         public MainWindow()
         {
             InitializeComponent();
-            users = new ArrayList<string>();
+            items = new Lib.LinkedList<String>();
+            try
+            {
+                DbExporter.ReadFromDbIntoCollection(items, ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            }
+            catch (Exception exception)
+            {
+                ErrorTextLable.Content = exception.Message;
+            }
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void AddNewItemButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var list = new Lib.LinkedList<String>();
-                var stack = new Lib.Stack<String>();
-                var arrlist = new Lib.ArrayList<String>();
-
-                var random = new Random();
-                int size = 10000000;
-
-                for (int i = 0; i < size; i++)
-                {
-                    arrlist.Add(random.Next(size).ToString());
-                }
-                arrlist.MergeSort();
+                items.Add(NewItemTextBox.Text);
+                NewItemTextBox.Text = String.Empty;
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-
+                ErrorTextLable.Content = exception.Message;
             }
         }
 
-        private void AddUserButton_Click(object sender, RoutedEventArgs e)
+        private void SavaToDbButton_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                DbExporter.SaveLinkeListToDb(items, ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            }
+            catch (Exception exception)
+            {
+                ErrorTextLable.Content = exception.Message;
+            }
         }
     }
 }
