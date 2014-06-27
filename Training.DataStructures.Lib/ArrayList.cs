@@ -153,17 +153,6 @@ namespace Training.DataStructures.Lib
             return data.GetEnumerator();
         }
 
-        private void CheckCapacity(int limit)
-        {
-            if (data.Length < limit)
-            {
-                int newCapacity = data.Length == 0 ? DefaultCapacity : data.Length * 2;
-                if (newCapacity < limit)
-                    newCapacity = limit;
-                Capacity = newCapacity;
-            }
-        }
-
         public void MergeSort()
         {
             MergeSort(data, 0, size - 1);
@@ -264,6 +253,17 @@ namespace Training.DataStructures.Lib
             while (i < end && mergedArrayCursor < mergedArray.Length)
             {
                 array[i++] = mergedArray[mergedArrayCursor++];
+            }
+        }
+
+        private void CheckCapacity(int limit)
+        {
+            if (data.Length < limit)
+            {
+                int newCapacity = data.Length == 0 ? DefaultCapacity : data.Length * 2;
+                if (newCapacity < limit)
+                    newCapacity = limit;
+                Capacity = newCapacity;
             }
         }
     }
