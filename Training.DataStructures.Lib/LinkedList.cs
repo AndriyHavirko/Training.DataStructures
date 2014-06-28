@@ -13,27 +13,40 @@ namespace Training.DataStructures.Lib
         private LinkedListNode<T> first;
         private LinkedListNode<T> last;
 
+        /// <summary>
+        /// Gets amount of elements in the current list.
+        /// </summary>
         public int Count { get; private set; }
 
+        /// <summary>
+        /// Gets the first <see cref="Training.DataStructures.Lib.LinkedListNode"/> of the current list.
+        /// </summary>
         public LinkedListNode<T> First
         {
             get { return first; }
         }
 
+        /// <summary>
+        /// Gets the last <see cref="Training.DataStructures.Lib.LinkedListNode"/> of the current list.
+        /// </summary>
         public LinkedListNode<T> Last
         {
             get { return last; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is read only.
+        /// </summary>
+        /// <value><c>true</c> if this instance is read only; otherwise, <c>false</c>.</value>
         public bool IsReadOnly
         {
             get { return false; }
         }
 
         /// <summary>
-        /// Add an element to list
+        /// Add the specified item to the list.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">The item to add to the current collection.</param>
         public void Add(T item)
         {
             lock (this)
@@ -54,9 +67,9 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Add a collection of elements to list
+        /// Adds a collection of items to the list.
         /// </summary>
-        /// <param name="items"></param>
+        /// <param name="items">The collection of item to add to the current list.</param>
         public void Add(IEnumerable<T> items)
         {
             lock (this)
@@ -68,6 +81,11 @@ namespace Training.DataStructures.Lib
             }
         }
 
+        /// <summary>
+        /// Add the item after the specified <see cref="Training.DataStructures.Lib.LinkedListNode"/>.
+        /// </summary>
+        /// <param name="node">Node.</param>
+        /// <param name="item">The item to add to the current collection.</param>
         public void AddAfter(LinkedListNode<T> node, T item)
         {
             if (node == last)
@@ -86,6 +104,11 @@ namespace Training.DataStructures.Lib
 
         }
 
+        /// <summary>
+        /// Add the item before the specified <see cref="Training.DataStructures.Lib.LinkedListNode"/>.
+        /// </summary>
+        /// <param name="node">Node.</param>
+        /// <param name="item">The item to add to the current collection.</param>
         public void AddBefore(LinkedListNode<T> node, T item)
         {
             var newNode = new LinkedListNode<T>(item);
@@ -110,7 +133,7 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Clear the list
+        /// Clear this list.
         /// </summary>
         public void Clear()
         {
@@ -120,10 +143,10 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Check if list contains specific item
+        /// Determines whether the current list contains a specific value.
         /// </summary>
-        /// <param name="item">Item</param>
-        /// <returns>Returns true if item was found otherwise returns false</returns>
+        /// <param name="item">The object to locate in the current list.</param>
+        /// <returns><c>true</c> if the the object was found; otherwise <c>false</c>.</returns>
         public bool Contains(T item)
         {
             var current = first;
@@ -136,6 +159,11 @@ namespace Training.DataStructures.Lib
             return false;
         }
 
+        /// <summary>
+        /// Copies elements of the current list to the specified array.
+        /// </summary>
+        /// <param name="array">Destination array.</param>
+        /// <param name="arrayIndex">Destination array index where to start copying.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
             var current = first;
@@ -145,6 +173,10 @@ namespace Training.DataStructures.Lib
             }
         }
 
+        /// <summary>
+        /// Gets the generic enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
         public IEnumerator<T> GetEnumerator()
         {
             var current = first;
@@ -156,16 +188,20 @@ namespace Training.DataStructures.Lib
 
         }
 
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
         /// <summary>
-        /// Get a LinkeListNode object containing the item
+        /// Find the specified item in the list
         /// </summary>
         /// <param name="item">Item to be found</param>
-        /// <returns>Returns LinkedListNode object containing the item, or null if item was not found</returns>
+        /// <returns><see cref="Training.DataStructures.Lib.LinkedListNode"/> object containing the item; <c>null</c> - if the item was not found.</returns>
         public LinkedListNode<T> Find(T item)
         {
             var current = first;
@@ -179,10 +215,10 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Remove the first occurance of the item in list
+        /// Removes the first occurrence of an item from the current list.
         /// </summary>
-        /// <param name="item">Item to be removed</param>
-        /// <returns>Returns true if item was removed otherwise returns false</returns>
+        /// <param name="item">The item to remove from the current list.</param>
+        /// <returns><c>true</c> if the item was removed; otherwise <c>false</c>.</returns>
         public bool Remove(T item)
         {
             var nodeToRemove = Find(item);
@@ -215,9 +251,9 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Get min item in the list
+        /// Get the minimum element in the list.
         /// </summary>
-        /// <returns>Min item</returns>
+        /// <returns>Minimum element.</returns>
         public T Min()
         {
             var currentNode = first;
@@ -232,9 +268,9 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Get Max item in the list
+        /// Get the maximum element in the list.
         /// </summary>
-        /// <returns>Max item</returns>
+        /// <returns>Maximum element.</returns>
         public T Max()
         {
             var currentNode = first;
@@ -249,7 +285,7 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Sort list
+        /// Sort the list.
         /// </summary>
         public void Sort()
         {
@@ -260,9 +296,9 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Sort list asynchronously
+        /// Sort the list asynchronously.
         /// </summary>
-        /// <returns>Task</returns>
+        /// <returns>The <see cref="System.Threading.Tasks.Task"/> instance representing sorting task.</returns>
         public async Task SortAsync()
         {
             await Task.Run(() =>
@@ -274,6 +310,9 @@ namespace Training.DataStructures.Lib
             });
         }
 
+        /// <summary>
+        /// Swap Data of the specified <see cref="Training.DataStructures.Lib.LinkedListNode"/> instances.
+        /// </summary>
         private void Swap(LinkedListNode<T> a, LinkedListNode<T> b)
         {
             var temp = a.Data;

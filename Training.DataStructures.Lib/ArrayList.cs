@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Training.DataStructures.Lib
 {
+    /// <summary>
+    /// Represents generic ArrayList
+    /// </summary>
     public class ArrayList<T>: IList<T> where T: IComparable<T>, IEquatable<T>
     {
         private T[] data;
@@ -10,11 +13,18 @@ namespace Training.DataStructures.Lib
 
         private static readonly int DefaultCapacity = 4;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Training.DataStructures.Lib.ArrayList"/> class.
+        /// </summary>
         public ArrayList()
         {
             data = new T[0];
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Training.DataStructures.Lib.ArrayList"/> class.
+        /// </summary>
+        /// <param name="capacity">Capacity of new instance.</param>
         public ArrayList(int capacity)
         {
             if (capacity < 0)
@@ -22,11 +32,18 @@ namespace Training.DataStructures.Lib
             data = new T[capacity];
         }
 
+        /// <summary>
+        /// Gets amount of elements in the current collection.
+        /// </summary>
         public int Count 
         {
             get { return size; }
         }
 
+        /// <summary>
+        /// Gets or sets the capacity of the current collection.
+        /// </summary>
+        /// <value>The capacity.</value>
         public int Capacity
         {
             get { return data.Length; }
@@ -49,11 +66,19 @@ namespace Training.DataStructures.Lib
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is read only.
+        /// </summary>
+        /// <value><c>true</c> if this instance is read only; otherwise, <c>false</c>.</value>
         public bool IsReadOnly
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="Training.DataStructures.Lib.ArrayList"/> at the specified index.
+        /// </summary>
+        /// <param name="index">Index.</param>
         public T this[int index]
         {
             get
@@ -70,11 +95,20 @@ namespace Training.DataStructures.Lib
             }
         }
 
+        /// <summary>
+        /// Gets index of the item in the current <see cref="Training.DataStructures.Lib.ArrayList"/> collection.
+        /// </summary>
+        /// <returns>Index of the item.</returns>
+        /// <param name="item">Item.</param>
         public int IndexOf(T item)
         {
             return Array.IndexOf(data, item);
         }
 
+        /// <summary>
+        /// Adds the specified item to the current collection.
+        /// </summary>
+        /// <param name="item">Item to be added.</param>
         public void Add(T item)
         {
             if (size == data.Length)
@@ -83,6 +117,9 @@ namespace Training.DataStructures.Lib
             size++;
         }
 
+        /// <summary>
+        /// Clear this collection.
+        /// </summary>
         public void Clear()
         {
             if (size > 0)
@@ -92,6 +129,11 @@ namespace Training.DataStructures.Lib
             }
         }
 
+        /// <summary>
+        /// Determines whether the current collection contains a specific value.
+        /// </summary>
+        /// <param name="item">The object to locate in the current collection.</param>
+        /// <returns><c>true</c> if the the object was found; otherwise <c>false</c>.</returns>
         public bool Contains(T item)
         {
             for (int i = 0; i < size; i++)
@@ -102,11 +144,21 @@ namespace Training.DataStructures.Lib
             return false;
         }
 
+        /// <summary>
+        /// Copies elements of the current instance to the specified array.
+        /// </summary>
+        /// <param name="array">Destination array.</param>
+        /// <param name="arrayIndex">Destination array index where to start copying.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
             Array.Copy(data, 0, array, arrayIndex, size);
         }
 
+        /// <summary>
+        /// Insert the specified item item in the specified index.
+        /// </summary>
+        /// <param name="index">Index where to insert new item.</param>
+        /// <param name="item">Item to be inserted.</param>
         public void Insert(int index, T item)
         {
             if (index < 0 || index > size)
@@ -118,6 +170,10 @@ namespace Training.DataStructures.Lib
             size++;
         }
 
+        /// <summary>
+        /// Removes an item at index.
+        /// </summary>
+        /// <param name="index">Index.</param>
         public void RemoveAt(int index)
         {
             if (index < 0 || index > size)
@@ -128,6 +184,10 @@ namespace Training.DataStructures.Lib
             data[size] = default(T);
         }
 
+        /// <summary>
+        /// Removes the first occurrence of an item from the current collection.
+        /// </summary>
+        /// <param name="item">The item to remove from the current collection.</param>
         public bool Remove(T item)
         {
             int index = IndexOf(item);
@@ -139,6 +199,10 @@ namespace Training.DataStructures.Lib
             return false;
         }
 
+        /// <summary>
+        /// Gets generic enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
         public IEnumerator<T> GetEnumerator()
         {
             lock (this)
@@ -148,16 +212,27 @@ namespace Training.DataStructures.Lib
             }
         }
 
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return data.GetEnumerator();
         }
 
+        /// <summary>
+        /// Sort current collection using Merge Sorting algorithm.
+        /// </summary>
         public void MergeSort()
         {
             MergeSort(data, 0, size - 1);
         }
 
+        /// <summary>
+        /// Sort current collection with Merge Sorting algorithm using specified comparer.
+        /// </summary>
+        /// <param name="comparer">Comparer.</param>
         public void MergeSort(IComparer<T> comparer)
         {
             MergeSort(data, 0, size - 1, comparer);
