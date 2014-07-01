@@ -11,6 +11,8 @@ namespace Training.DataStructures.Lib
     {
         private LinkedListNode<T> top;
 
+        private readonly  Object syncRoot = new Object();
+
         /// <summary>
         /// Gets an amount of elements in the stack.
         /// </summary>
@@ -25,12 +27,23 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
+        /// Gets an object that can be used to synchronize access to the stack
+        /// </summary>
+        public object SyncRoot
+        {
+            get { return syncRoot; }
+        }
+
+        /// <summary>
         /// Clear this stack.
         /// </summary>
         public void Clear()
         {
-            top = null;
-            Count = 0;
+            lock (syncRoot)
+            {
+                top = null;
+                Count = 0;
+            }
         }
 
         /// <summary>
@@ -56,16 +69,19 @@ namespace Training.DataStructures.Lib
         /// <returns>Removed element.</returns>
         public T Pop()
         {
-            if (top == null)
-                throw new InvalidOperationException(message: "The Stack is empty.");
-            
-            var data = top.Data;
-            if (top.Next != null)
-                top.Next.Previous = null; // removing link to current top element
-            
-            top = top.Next;
-            Count--;
-            return data;
+            lock (syncRoot)
+            {
+                if (top == null)
+                    throw new InvalidOperationException(message: "The Stack is empty.");
+
+                var data = top.Data;
+                if (top.Next != null)
+                    top.Next.Previous = null; // removing link to current top element
+
+                top = top.Next;
+                Count--;
+                return data;
+            }
         }
 
         /// <summary>
@@ -75,13 +91,16 @@ namespace Training.DataStructures.Lib
         public void Push(T item)
         {
             var newItem = new LinkedListNode<T>(data: item);
-            if (top != null)
+            lock (syncRoot)
             {
-                top.Previous = newItem;
-                newItem.Next = top;
+                if (top != null)
+                {
+                    top.Previous = newItem;
+                    newItem.Next = top;
+                }
+                top = newItem;
+                Count++;
             }
-            top = newItem;
-            Count++;
         }
 
         /// <summary>

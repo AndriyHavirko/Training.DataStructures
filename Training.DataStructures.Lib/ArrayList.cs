@@ -13,6 +13,8 @@ namespace Training.DataStructures.Lib
 
         private static readonly int DefaultCapacity = 4;
 
+        private readonly Object syncRoot = new Object();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Training.DataStructures.Lib.ArrayList`1"/> class.
         /// </summary>
@@ -49,18 +51,21 @@ namespace Training.DataStructures.Lib
             get { return data.Length; }
             set
             {
-                if (value != data.Length)
+                lock (SyncRoot)
                 {
-                    if (value > 0)
+                    if (value != data.Length)
                     {
-                        var newData = new T[value];
-                        if (size > 0)
-                            Array.Copy(data, 0, newData, 0, size);
-                        data = newData;
-                    }
-                    else
-                    {
-                        data = new T[DefaultCapacity];
+                        if (value > 0)
+                        {
+                            var newData = new T[value];
+                            if (size > 0)
+                                Array.Copy(data, 0, newData, 0, size);
+                            data = newData;
+                        }
+                        else
+                        {
+                            data = new T[DefaultCapacity];
+                        }
                     }
                 }
             }
@@ -73,6 +78,14 @@ namespace Training.DataStructures.Lib
         public bool IsReadOnly
         {
             get { return false; }
+        }
+
+        /// <summary>
+        /// Gets an object that can be used to synchronize access to the collection
+        /// </summary>
+        public object SyncRoot
+        {
+            get { return syncRoot; }
         }
 
         /// <summary>
@@ -89,9 +102,12 @@ namespace Training.DataStructures.Lib
             }
             set
             {
-                if (index < 0 || index >= size)
-                    throw new ArgumentOutOfRangeException();
-                data[index] = value;
+                lock (SyncRoot)
+                {
+                    if (index < 0 || index >= size)
+                        throw new ArgumentOutOfRangeException();
+                    data[index] = value;
+                }
             }
         }
 
@@ -111,10 +127,13 @@ namespace Training.DataStructures.Lib
         /// <param name="item">Item to be added.</param>
         public void Add(T item)
         {
-            if (size == data.Length)
-                CheckCapacity(size + 1);
-            data[size] = item;
-            size++;
+            lock (SyncRoot)
+            {
+                if (size == data.Length)
+                    CheckCapacity(size + 1);
+                data[size] = item;
+                size++;
+            }
         }
 
         /// <summary>
@@ -122,10 +141,13 @@ namespace Training.DataStructures.Lib
         /// </summary>
         public void Clear()
         {
-            if (size > 0)
+            lock (SyncRoot)
             {
-                Array.Clear(data, 0, size);
-                size = 0;
+                if (size > 0)
+                {
+                    Array.Clear(data, 0, size);
+                    size = 0;
+                }
             }
         }
 
@@ -161,13 +183,16 @@ namespace Training.DataStructures.Lib
         /// <param name="item">Item to be inserted.</param>
         public void Insert(int index, T item)
         {
-            if (index < 0 || index > size)
-                throw  new ArgumentOutOfRangeException();
-            if (size == data.Length)
-                CheckCapacity(size + 1);
-            Array.Copy(data, index, data, index + 1, size - index);
-            data[index] = item;
-            size++;
+            lock (SyncRoot)
+            {
+                if (index < 0 || index > size)
+                    throw new ArgumentOutOfRangeException();
+                if (size == data.Length)
+                    CheckCapacity(size + 1);
+                Array.Copy(data, index, data, index + 1, size - index);
+                data[index] = item;
+                size++;
+            }
         }
 
         /// <summary>
@@ -176,12 +201,15 @@ namespace Training.DataStructures.Lib
         /// <param name="index">Index.</param>
         public void RemoveAt(int index)
         {
-            if (index < 0 || index > size)
-                throw new ArgumentOutOfRangeException();
-            size--;
+            lock (SyncRoot)
+            {
+                if (index < 0 || index > size)
+                    throw new ArgumentOutOfRangeException();
+                size--;
 
-            Array.Copy(data, index + 1, data, index, size - index);
-            data[size] = default(T);
+                Array.Copy(data, index + 1, data, index, size - index);
+                data[size] = default(T);
+            }
         }
 
         /// <summary>
@@ -191,12 +219,15 @@ namespace Training.DataStructures.Lib
         public bool Remove(T item)
         {
             int index = IndexOf(item);
-            if (index >= 0)
+            lock (SyncRoot)
             {
-                RemoveAt(index);
-                return true;
+                if (index >= 0)
+                {
+                    RemoveAt(index);
+                    return true;
+                }
+                return false;
             }
-            return false;
         }
 
         /// <summary>
@@ -226,7 +257,10 @@ namespace Training.DataStructures.Lib
         /// </summary>
         public void MergeSort()
         {
-            MergeSort(data, 0, size - 1);
+            lock (SyncRoot)
+            {
+                MergeSort(data, 0, size - 1);
+            }
         }
 
         /// <summary>
@@ -235,7 +269,10 @@ namespace Training.DataStructures.Lib
         /// <param name="comparer">Comparer.</param>
         public void MergeSort(IComparer<T> comparer)
         {
-            MergeSort(data, 0, size - 1, comparer);
+            lock (SyncRoot)
+            {
+                MergeSort(data, 0, size - 1, comparer);
+            }
         }
 
         private void MergeSort(T[] array, int start, int end)

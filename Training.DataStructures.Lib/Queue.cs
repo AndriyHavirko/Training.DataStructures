@@ -12,6 +12,8 @@ namespace Training.DataStructures.Lib
         private LinkedListNode<T> first;
         private LinkedListNode<T> last;
 
+        private readonly Object syncRoot = new Object();
+
         /// <summary>
         /// Gets an amount of elements in the queue.
         /// </summary>
@@ -36,6 +38,14 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
+        /// Gets an object that can be used to synchronize access to the stack
+        /// </summary>
+        public object SyncRoot
+        {
+            get { return syncRoot; }
+        }
+
+        /// <summary>
         /// Determines whether the current queue contains a specific value.
         /// </summary>
         /// <param name="item">The object to locate in the current queue.</param>
@@ -57,9 +67,12 @@ namespace Training.DataStructures.Lib
         /// </summary>
         public void Clear()
         {
-            first = null;
-            last = null;
-            Count = 0;
+            lock (SyncRoot)
+            {
+                first = null;
+                last = null;
+                Count = 0;
+            }
         }
 
         /// <summary>
@@ -68,16 +81,19 @@ namespace Training.DataStructures.Lib
         /// <returns>Removed element.</returns>
         public T Dequeue()
         {
-            if (First == null)
-                throw new InvalidOperationException(message: "The Queue is empty.");
+            lock (SyncRoot)
+            {
+                if (First == null)
+                    throw new InvalidOperationException(message: "The Queue is empty.");
 
-            var data = First.Data;
-            if (First.Next != null)
-                First.Next.Previous = null; // removing link to current first element
+                var data = First.Data;
+                if (First.Next != null)
+                    First.Next.Previous = null; // removing link to current first element
 
-            first = First.Next;
-            Count--;
-            return data;
+                first = First.Next;
+                Count--;
+                return data;
+            }
         }
 
         /// <summary>
@@ -87,17 +103,20 @@ namespace Training.DataStructures.Lib
         public void Enqueue(T item)
         {
             var newItem = new LinkedListNode<T>(data: item);
-            if (First == null)
+            lock (SyncRoot)
             {
-                first = newItem;
+                if (First == null)
+                {
+                    first = newItem;
+                }
+                else
+                {
+                    Last.Next = newItem;
+                    newItem.Previous = Last;
+                }
+                last = newItem;
+                Count++;
             }
-            else
-            {
-                Last.Next = newItem;
-                newItem.Previous = Last;
-            }
-            last = newItem;
-            Count++;
         }
 
         /// <summary>

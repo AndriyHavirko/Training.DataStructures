@@ -13,6 +13,8 @@ namespace Training.DataStructures.Lib
         private LinkedListNode<T> first;
         private LinkedListNode<T> last;
 
+        private readonly Object syncRoot = new Object();
+
         /// <summary>
         /// Gets amount of elements in the current list.
         /// </summary>
@@ -44,12 +46,20 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
+        /// Gets an object that can be used to synchronize access to the list
+        /// </summary>
+        public object SyncRoot
+        {
+            get { return syncRoot; }
+        }
+
+        /// <summary>
         /// Add the specified item to the list.
         /// </summary>
         /// <param name="item">The item to add to the current collection.</param>
         public void Add(T item)
         {
-            lock (this)
+            lock (SyncRoot)
             {
                 var newNode = new LinkedListNode<T>(item);
                 if (first == null)
@@ -72,7 +82,7 @@ namespace Training.DataStructures.Lib
         /// <param name="items">The collection of item to add to the current list.</param>
         public void Add(IEnumerable<T> items)
         {
-            lock (this)
+            lock (SyncRoot)
             {
                 foreach (var item in items)
                 {
@@ -92,7 +102,7 @@ namespace Training.DataStructures.Lib
                 Add(item);
             else
             {
-                lock (this)
+                lock (SyncRoot)
                 {
                     var newNode = new LinkedListNode<T>(item, previous: node, next: node.Next);
 
@@ -112,7 +122,7 @@ namespace Training.DataStructures.Lib
         public void AddBefore(LinkedListNode<T> node, T item)
         {
             var newNode = new LinkedListNode<T>(item);
-            lock (this)
+            lock (SyncRoot)
             {
                 if (node == first)
                 {
@@ -137,9 +147,12 @@ namespace Training.DataStructures.Lib
         /// </summary>
         public void Clear()
         {
-            first = null;
-            last = null;
-            Count = 0;
+            lock (SyncRoot)
+            {
+                first = null;
+                last = null;
+                Count = 0;
+            }
         }
 
         /// <summary>
@@ -225,7 +238,7 @@ namespace Training.DataStructures.Lib
             if (nodeToRemove == null)
                 return false;
             //else
-            lock (this)
+            lock (SyncRoot)
             {
                 if (nodeToRemove == first)
                 {
@@ -289,7 +302,7 @@ namespace Training.DataStructures.Lib
         /// </summary>
         public void Sort()
         {
-            lock (this)
+            lock (SyncRoot)
             {
                 BubbleSort();
             }
@@ -303,7 +316,7 @@ namespace Training.DataStructures.Lib
         {
             await Task.Run(() =>
             {
-                lock (this)
+                lock (SyncRoot)
                 {
                     BubbleSort();
                 }
