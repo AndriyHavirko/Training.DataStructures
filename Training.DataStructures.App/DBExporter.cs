@@ -5,7 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Training.DataStructures.Lib
+namespace Training.DataStructures.App
 {
     public static class DbExporter
     {
