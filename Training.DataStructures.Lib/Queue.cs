@@ -7,7 +7,7 @@ namespace Training.DataStructures
     /// Represents a simple Queue class with basic operations
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Queue<T> where T : IComparable<T>, IEquatable<T>
+    public class Queue<T>: ICollection<T>, IEnumerable<T> where T : IComparable<T>, IEquatable<T>
     {
         private LinkedListNode<T> first;
         private LinkedListNode<T> last;
@@ -43,6 +43,21 @@ namespace Training.DataStructures
         public object SyncRoot
         {
             get { return syncRoot; }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public void Add(T item)
+        {
+            Enqueue(item);
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -129,6 +144,21 @@ namespace Training.DataStructures
             {
                 Enqueue(item);
             }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Remove(T item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

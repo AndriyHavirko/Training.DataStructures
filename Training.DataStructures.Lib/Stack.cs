@@ -7,11 +7,11 @@ namespace Training.DataStructures
     /// Represents a simple Stack with basic operations
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Stack<T> where T : IComparable<T>, IEquatable<T>
+    public class Stack<T>: ICollection<T>, IEnumerable<T> where T : IComparable<T>, IEquatable<T>
     {
         private LinkedListNode<T> top;
 
-        private readonly  Object syncRoot = new Object();
+        private readonly Object syncRoot = new Object();
 
         /// <summary>
         /// Gets an amount of elements in the stack.
@@ -32,6 +32,16 @@ namespace Training.DataStructures
         public object SyncRoot
         {
             get { return syncRoot; }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public void Add(T item)
+        {
+            Push(item);
         }
 
         /// <summary>
@@ -61,6 +71,21 @@ namespace Training.DataStructures
                 current = current.Next;
             }
             return false;
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -113,6 +138,11 @@ namespace Training.DataStructures
             {
                 Push(item);
             }
+        }
+
+        public bool Remove(T item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

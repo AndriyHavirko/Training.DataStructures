@@ -6,7 +6,7 @@ namespace Training.DataStructures
     /// <summary>
     /// Represents a generic ArrayList
     /// </summary>
-    public class ArrayList<T>: IList<T> where T: IComparable<T>, IEquatable<T>
+    public class ArrayList<T>: IList<T>, ICollection<T>, IEnumerable<T> where T: IComparable<T>, IEquatable<T>
     {
         private T[] data;
         private int size;

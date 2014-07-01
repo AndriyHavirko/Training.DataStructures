@@ -8,7 +8,7 @@ namespace Training.DataStructures
     /// A double linled list
     /// </summary>
     /// <typeparam name="T">Type parameter</typeparam>
-    public class LinkedList<T>: ICollection<T> where T: IComparable<T>, IEquatable<T>
+    public class LinkedList<T>: ICollection<T>, IEnumerable<T> where T: IComparable<T>, IEquatable<T>
     {
         private LinkedListNode<T> first;
         private LinkedListNode<T> last;
