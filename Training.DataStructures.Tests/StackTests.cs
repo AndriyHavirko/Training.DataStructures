@@ -8,45 +8,95 @@ namespace Training.DataStructures.Tests
     public class StackTests
     {
         private Stack<String> stackOfStrings;
-        private Stack<Int32> stackOfInts;
         
+        private String[] arrayOfStrings;
+
+
         [SetUp]
         public void SetUp()
         {
+            var random = new Random();
+            var size = 100;
+
             stackOfStrings = new Stack<string>();
-            stackOfInts = new Stack<int>();
+            
+            arrayOfStrings = new string[size];
+
+            for (int i = 0; i < size; i++)
+            {
+                arrayOfStrings[i] = String.Format("Test String {0}", random.Next(size));
+            }
         }
 
         [TestCase]
         public void Emty()
         {
-            Assert.AreEqual(stackOfInts.Count, 0);
             Assert.AreEqual(stackOfStrings.Count, 0);
-            Assert.Throws<InvalidOperationException>(() => stackOfInts.Pop());
             Assert.Throws<InvalidOperationException>(() => stackOfStrings.Pop());
         }
 
         [TestCase]
-        public void Push()
+        public void Contains()
         {
-            stackOfInts.Push(2);
-            stackOfInts.Push(4);
-            stackOfInts.Push(8);
-            stackOfInts.Push(16);
-            Assert.AreEqual(stackOfInts.Count, 4);
-            Assert.IsTrue(stackOfInts.Contains(2));
-            Assert.IsTrue(stackOfInts.Contains(4));
-            Assert.IsTrue(stackOfInts.Contains(8));
-            Assert.IsTrue(stackOfInts.Contains(16));
-
-            stackOfStrings.Push(String.Empty);
-            stackOfStrings.Push("");
-            stackOfStrings.Push("Test");
-            Assert.AreEqual(stackOfStrings.Count, 3);
-            Assert.IsTrue(stackOfStrings.Contains(String.Empty));
-            Assert.IsTrue(stackOfStrings.Contains(""));
-            Assert.IsTrue(stackOfStrings.Contains("Test"));
+            Assert.IsFalse(stackOfStrings.Contains("Test 1"));
             
+            stackOfStrings.Push("Test 1");
+            Assert.IsTrue(stackOfStrings.Contains("Test 1"));
+
+            stackOfStrings.Push("Test 2");
+            stackOfStrings.Push("Test 3");
+            Assert.IsTrue(stackOfStrings.Contains("Test 3"));
+            Assert.IsTrue(stackOfStrings.Contains("Test 2"));
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(10)]
+        [TestCase(100)]
+        public void Push(int size)
+        {
+            for (int i = 0; i<size; i++)
+            {
+                stackOfStrings.Push(arrayOfStrings[i]);
+                Assert.AreEqual(stackOfStrings.Top.Data, arrayOfStrings[i]);
+            }
+            Assert.AreEqual(stackOfStrings.Count, size);
+        }
+
+        public void PushCollection()
+        {
+            stackOfStrings.Push(arrayOfStrings);
+            Assert.AreEqual(stackOfStrings.Count, arrayOfStrings.Length);
+            foreach (var s in arrayOfStrings)
+                Assert.IsTrue(stackOfStrings.Contains(s));
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(10)]
+        [TestCase(100)]
+        public void Pop(int size)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                stackOfStrings.Push(arrayOfStrings[i]);
+            }
+
+            for (int i = size - 1; i >= 0; i--)
+            {
+                Assert.AreEqual(stackOfStrings.Pop(), arrayOfStrings[i]);
+            }
+        }
+
+        [TestCase]
+        public void Clear()
+        {
+            stackOfStrings.Push(arrayOfStrings);
+            Assert.AreEqual(stackOfStrings.Count, arrayOfStrings.Length);
+
+            stackOfStrings.Clear();
+            Assert.AreEqual(stackOfStrings.Count, 0);
+            Assert.IsNull(stackOfStrings.Top);
         }
     }
 }
