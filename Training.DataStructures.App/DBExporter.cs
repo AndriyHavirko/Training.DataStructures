@@ -9,7 +9,7 @@ namespace Training.DataStructures.App
 {
     public static class DbExporter
     {
-        public static void SaveLinkeListToDb<T>(LinkedList<T> list, String connectionString) 
+        public static void SaveLinkeListToDb<T>(Lib.LinkedList<T> list, String connectionString) 
             where T : IComparable<T>, IEquatable<T>
         {
             if (list == null) 
