@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Training.DataStructures.Lib
+namespace Training.DataStructures
 {
     /// <summary>
     /// Represents a generic ArrayList

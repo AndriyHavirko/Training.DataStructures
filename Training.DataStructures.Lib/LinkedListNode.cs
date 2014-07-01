@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Training.DataStructures.Lib
+namespace Training.DataStructures
 {
     /// <summary>
     /// Represents a node of a LinkedList collection

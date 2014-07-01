@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Training.DataStructures.Lib
+namespace Training.DataStructures
 {
     /// <summary>
     /// Represents a simple Stack with basic operations
@@ -72,7 +72,7 @@ namespace Training.DataStructures.Lib
             lock (syncRoot)
             {
                 if (top == null)
-                    throw new InvalidOperationException(message: "The Stack is empty.");
+                    throw new InvalidOperationException(message: Resources.Stack_Pop_EmptyStack);
 
                 var data = top.Data;
                 if (top.Next != null)

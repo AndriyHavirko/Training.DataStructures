@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Training.DataStructures.Lib
+namespace Training.DataStructures
 {
     /// <summary>
     /// A double linled list

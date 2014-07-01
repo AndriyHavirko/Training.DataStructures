@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Training.DataStructures.Lib
+namespace Training.DataStructures
 {
     /// <summary>
     /// Represents a simple Queue class with basic operations
@@ -84,7 +84,7 @@ namespace Training.DataStructures.Lib
             lock (SyncRoot)
             {
                 if (First == null)
-                    throw new InvalidOperationException(message: "The Queue is empty.");
+                    throw new InvalidOperationException(message: Resources.Queue_Dequeue_EmptyQueue);
 
                 var data = First.Data;
                 if (First.Next != null)
