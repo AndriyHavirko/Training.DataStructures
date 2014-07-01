@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Training.DataStructures.Lib
 {
     /// <summary>
-    /// Represents generic ArrayList
+    /// Represents a generic ArrayList
     /// </summary>
     public class ArrayList<T>: IList<T> where T: IComparable<T>, IEquatable<T>
     {
@@ -14,7 +14,7 @@ namespace Training.DataStructures.Lib
         private static readonly int DefaultCapacity = 4;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Training.DataStructures.Lib.ArrayList"/> class.
+        /// Initializes a new instance of the <see cref="T:Training.DataStructures.Lib.ArrayList`1"/> class.
         /// </summary>
         public ArrayList()
         {
@@ -22,7 +22,7 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Training.DataStructures.Lib.ArrayList"/> class.
+        /// Initializes a new instance of the <see cref="T:Training.DataStructures.Lib.ArrayList`1"/> class.
         /// </summary>
         /// <param name="capacity">Capacity of new instance.</param>
         public ArrayList(int capacity)
@@ -76,7 +76,7 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="Training.DataStructures.Lib.ArrayList"/> at the specified index.
+        /// Gets or sets the <see cref="T:Training.DataStructures.Lib.ArrayList`1"/> at the specified index.
         /// </summary>
         /// <param name="index">Index.</param>
         public T this[int index]
@@ -96,7 +96,7 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Gets index of the item in the current <see cref="Training.DataStructures.Lib.ArrayList"/> collection.
+        /// Gets index of the item in the current <see cref="T:Training.DataStructures.Lib.ArrayList`1"/> collection.
         /// </summary>
         /// <returns>Index of the item.</returns>
         /// <param name="item">Item.</param>

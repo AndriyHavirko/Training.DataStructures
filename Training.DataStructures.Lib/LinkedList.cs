@@ -19,7 +19,7 @@ namespace Training.DataStructures.Lib
         public int Count { get; private set; }
 
         /// <summary>
-        /// Gets the first <see cref="Training.DataStructures.Lib.LinkedListNode"/> of the current list.
+        /// Gets the first <see cref="T:Training.DataStructures.Lib.LinkedListNode`1"/> of the current list.
         /// </summary>
         public LinkedListNode<T> First
         {
@@ -27,7 +27,7 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Gets the last <see cref="Training.DataStructures.Lib.LinkedListNode"/> of the current list.
+        /// Gets the last <see cref="T:Training.DataStructures.Lib.LinkedListNode`1"/> of the current list.
         /// </summary>
         public LinkedListNode<T> Last
         {
@@ -82,7 +82,7 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Add the item after the specified <see cref="Training.DataStructures.Lib.LinkedListNode"/>.
+        /// Add the item after the specified <see cref="T:Training.DataStructures.Lib.LinkedListNode`1"/>.
         /// </summary>
         /// <param name="node">Node.</param>
         /// <param name="item">The item to add to the current collection.</param>
@@ -105,7 +105,7 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Add the item before the specified <see cref="Training.DataStructures.Lib.LinkedListNode"/>.
+        /// Add the item before the specified <see cref="T:Training.DataStructures.Lib.LinkedListNode`1"/>.
         /// </summary>
         /// <param name="node">Node.</param>
         /// <param name="item">The item to add to the current collection.</param>
@@ -201,7 +201,7 @@ namespace Training.DataStructures.Lib
         /// Find the specified item in the list
         /// </summary>
         /// <param name="item">Item to be found</param>
-        /// <returns><see cref="Training.DataStructures.Lib.LinkedListNode"/> object containing the item; <c>null</c> - if the item was not found.</returns>
+        /// <returns><see cref="T:Training.DataStructures.Lib.LinkedListNode`1"/> object containing the item; <c>null</c> - if the item was not found.</returns>
         public LinkedListNode<T> Find(T item)
         {
             var current = first;
@@ -311,7 +311,7 @@ namespace Training.DataStructures.Lib
         }
 
         /// <summary>
-        /// Swap Data of the specified <see cref="Training.DataStructures.Lib.LinkedListNode"/> instances.
+        /// Swap Data of the specified <see cref="T:Training.DataStructures.Lib.LinkedListNode`1"/> instances.
         /// </summary>
         private void Swap(LinkedListNode<T> a, LinkedListNode<T> b)
         {
