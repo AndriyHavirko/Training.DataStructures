@@ -15,6 +15,13 @@ build/
 [Bb]in/
 [Oo]bj/
 
+# NuGet Packages
+packages/*
+*.nupkg
+## TODO: If the tool you use requires repositories.config
+## uncomment the next line
+#!packages/repositories.config
+
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
 
