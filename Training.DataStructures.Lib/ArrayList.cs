@@ -153,6 +153,7 @@ namespace Training.DataStructures
                 {
                     Array.Clear(data, 0, size);
                     size = 0;
+                    Capacity = 0;
                 }
             }
         }
