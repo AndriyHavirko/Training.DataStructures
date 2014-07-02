@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Training.DataStructures.Tests
 {
     [TestFixture]
-    public class StackNUnitTests
+    public class StackTests
     {
         private Stack<String> stackOfStrings;
         
@@ -28,14 +28,14 @@ namespace Training.DataStructures.Tests
             }
         }
 
-        [Test]
+        [TestCase]
         public void Emty()
         {
             Assert.AreEqual(stackOfStrings.Count, 0);
             Assert.Throws<InvalidOperationException>(() => stackOfStrings.Pop());
         }
 
-        [Test]
+        [TestCase]
         public void Contains()
         {
             Assert.IsFalse(stackOfStrings.Contains("Test 1"));
@@ -88,7 +88,7 @@ namespace Training.DataStructures.Tests
             }
         }
 
-        [Test]
+        [TestCase]
         public void Clear()
         {
             stackOfStrings.Push(arrayOfStrings);
