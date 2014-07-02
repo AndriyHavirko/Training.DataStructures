@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Training.DataStructures
@@ -7,7 +8,7 @@ namespace Training.DataStructures
     /// Represents a simple Queue class with basic operations
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Queue<T>: ICollection<T>, IEnumerable<T> where T : IComparable<T>, IEquatable<T>
+    public class Queue<T>: ICollection, IEnumerable<T> where T : IComparable<T>, IEquatable<T>
     {
         private LinkedListNode<T> first;
         private LinkedListNode<T> last;
@@ -18,6 +19,11 @@ namespace Training.DataStructures
         /// Gets an amount of elements in the queue.
         /// </summary>
         public int Count { get; private set; }
+
+        bool ICollection.IsSynchronized
+        {
+            get { return false; }
+        }
 
         /// <summary>
         /// Gets the first element of the queue.
@@ -45,19 +51,18 @@ namespace Training.DataStructures
             get { return syncRoot; }
         }
 
-        public bool IsReadOnly
+        /// <summary>
+        /// Copies elements of the current queue to the specified array.
+        /// </summary>
+        /// <param name="array">Destination array.</param>
+        /// <param name="index">Destination array index where to start copying.</param>
+        public void CopyTo(Array array, int index)
         {
-            get { return false; }
-        }
-
-        public void Add(T item)
-        {
-            Enqueue(item);
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
+            var current = first;
+            for (int i = index; i < Count + index; i++, current = current.Next)
+            {
+                array.SetValue(current.Data, i);
+            }
         }
 
         /// <summary>
@@ -146,19 +151,27 @@ namespace Training.DataStructures
             }
         }
 
+        /// <summary>
+        /// Gets the generic enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            var current = first;
+            while (current != null)
+            {
+                yield return current.Data;
+                current = current.Next;
+            }
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(T item)
-        {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }

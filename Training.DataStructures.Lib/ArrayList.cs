@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Training.DataStructures
@@ -6,7 +7,7 @@ namespace Training.DataStructures
     /// <summary>
     /// Represents a generic ArrayList
     /// </summary>
-    public class ArrayList<T>: IList<T>, ICollection<T>, IEnumerable<T> where T: IComparable<T>, IEquatable<T>
+    public class ArrayList<T>: IList<T>, ICollection where T: IComparable<T>, IEquatable<T>
     {
         private T[] data;
         private int size;
@@ -76,6 +77,11 @@ namespace Training.DataStructures
         /// </summary>
         /// <value><c>true</c> if this instance is read only; otherwise, <c>false</c>.</value>
         public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        bool ICollection.IsSynchronized
         {
             get { return false; }
         }
@@ -176,6 +182,11 @@ namespace Training.DataStructures
             Array.Copy(data, 0, array, arrayIndex, size);
         }
 
+        public void CopyTo(Array array, int index)
+        {
+            Array.Copy(data, 0, array, index, size);
+        }
+
         /// <summary>
         /// Insert the specified item item in the specified index.
         /// </summary>
@@ -247,7 +258,7 @@ namespace Training.DataStructures
         /// Gets the enumerator.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return data.GetEnumerator();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Training.DataStructures
@@ -7,7 +8,7 @@ namespace Training.DataStructures
     /// Represents a simple Stack with basic operations
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Stack<T>: ICollection<T>, IEnumerable<T> where T : IComparable<T>, IEquatable<T>
+    public class Stack<T>: ICollection, IEnumerable<T> where T : IComparable<T>, IEquatable<T>
     {
         private LinkedListNode<T> top;
 
@@ -34,14 +35,9 @@ namespace Training.DataStructures
             get { return syncRoot; }
         }
 
-        public bool IsReadOnly
+        bool ICollection.IsSynchronized
         {
             get { return false; }
-        }
-
-        public void Add(T item)
-        {
-            Push(item);
         }
 
         /// <summary>
@@ -73,19 +69,41 @@ namespace Training.DataStructures
             return false;
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        /// <summary>
+        /// Copies elements of the current stack to the specified array.
+        /// </summary>
+        /// <param name="array">Destination array.</param>
+        /// <param name="index">Destination array index where to start copying.</param>
+        public void CopyTo(Array array, int index)
         {
-            throw new NotImplementedException();
+            var current = top;
+            for (int i = index; i < Count + index; i++, current = current.Next)
+            {
+                array.SetValue(current.Data, i); 
+            }
         }
 
+        /// <summary>
+        /// Gets the generic enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            var current = top;
+            while (current != null)
+            {
+                yield return current.Data;
+                current = current.Next;
+            }
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -138,11 +156,6 @@ namespace Training.DataStructures
             {
                 Push(item);
             }
-        }
-
-        public bool Remove(T item)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Training.DataStructures
 {
     /// <summary>
-    /// A double linled list
+    /// A doubly linked list
     /// </summary>
     /// <typeparam name="T">Type parameter</typeparam>
-    public class LinkedList<T>: ICollection<T>, IEnumerable<T> where T: IComparable<T>, IEquatable<T>
+    public class LinkedList<T>: ICollection<T>, ICollection where T: IComparable<T>, IEquatable<T>
     {
         private LinkedListNode<T> first;
         private LinkedListNode<T> last;
@@ -41,6 +42,11 @@ namespace Training.DataStructures
         /// </summary>
         /// <value><c>true</c> if this instance is read only; otherwise, <c>false</c>.</value>
         public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        bool ICollection.IsSynchronized
         {
             get { return false; }
         }
@@ -187,6 +193,21 @@ namespace Training.DataStructures
         }
 
         /// <summary>
+        /// Copies elements of the current list to the specified array.
+        /// </summary>
+        /// <param name="array">Destination array.</param>
+        /// <param name="index">Destination array index where to start copying.</param>
+        public void CopyTo(Array array, int index)
+        {
+            var current = first;
+            for (int i = index; i < Count + index; i++, current = current.Next)
+            {
+                array.SetValue(current.Data, i);
+            }
+        }
+
+
+        /// <summary>
         /// Gets the generic enumerator.
         /// </summary>
         /// <returns>The enumerator.</returns>
@@ -205,7 +226,7 @@ namespace Training.DataStructures
         /// Gets the enumerator.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
