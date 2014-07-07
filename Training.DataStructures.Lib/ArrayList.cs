@@ -38,7 +38,7 @@ namespace Training.DataStructures
         /// <summary>
         /// Gets amount of elements in the current collection.
         /// </summary>
-        public int Count 
+        public int Count
         {
             get { return size; }
         }

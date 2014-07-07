@@ -104,11 +104,11 @@ namespace Training.DataStructures
         /// <param name="item">The item to add to the current collection.</param>
         public void AddAfter(LinkedListNode<T> node, T item)
         {
-            if (node == last)
-                Add(item);
-            else
+            lock (SyncRoot)
             {
-                lock (SyncRoot)
+                if (node == last)
+                    Add(item);
+                else
                 {
                     var newNode = new LinkedListNode<T>(item, previous: node, next: node.Next);
 
@@ -117,7 +117,6 @@ namespace Training.DataStructures
                     Count++;
                 }
             }
-
         }
 
         /// <summary>
@@ -255,12 +254,13 @@ namespace Training.DataStructures
         /// <returns><c>true</c> if the item was removed; otherwise <c>false</c>.</returns>
         public bool Remove(T item)
         {
-            var nodeToRemove = Find(item);
-            if (nodeToRemove == null)
-                return false;
-            //else
             lock (SyncRoot)
             {
+                var nodeToRemove = Find(item);
+                
+                if (nodeToRemove == null)
+                    return false;
+
                 if (nodeToRemove == first)
                 {
                     first = nodeToRemove.Next;
@@ -349,10 +349,12 @@ namespace Training.DataStructures
         /// </summary>
         private void Swap(LinkedListNode<T> a, LinkedListNode<T> b)
         {
-            var temp = a.Data;
-            a.Data = b.Data;
-            b.Data = temp;
-
+            lock (SyncRoot)
+            {
+                var temp = a.Data;
+                a.Data = b.Data;
+                b.Data = temp;
+            }
         }
 
         private void BubbleSort()

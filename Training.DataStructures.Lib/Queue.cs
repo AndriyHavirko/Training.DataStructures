@@ -145,9 +145,12 @@ namespace Training.DataStructures
         /// <param name="items">Items to be added to the queue.</param>
         public void Enqueue(IEnumerable<T> items)
         {
-            foreach (var item in items)
+            lock (SyncRoot)
             {
-                Enqueue(item);
+                foreach (var item in items)
+                {
+                    Enqueue(item);
+                }
             }
         }
 

@@ -152,9 +152,12 @@ namespace Training.DataStructures
         /// <param name="items">Items to be added to the stack.</param>
         public void Push(IEnumerable<T> items)
         {
-            foreach (var item in items)
+            lock (syncRoot)
             {
-                Push(item);
+                foreach (var item in items)
+                {
+                    Push(item);
+                }
             }
         }
     }
